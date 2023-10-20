@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run:
           name: "Install Clang"
-          command: "sudo apt-get install clang"
+          command: "sudo apt-get update && sudo apt-get install clang"
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
