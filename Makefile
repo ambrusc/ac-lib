@@ -93,12 +93,25 @@ AC_ALLOC_DEPS := ac_alloc.h
 AC_STR_DEPS := ac_str.h ac_alloc.h
 AC_TEST_DEPS := ac_test.h ac_str.h ac_alloc.h
 
+ALL_DEPS := ac_test.h ac_str.h ac_alloc.h
+
 #-------------------------------------------------------------------------------
 # TEST ac_test
 #-------------------------------------------------------------------------------
 
 TARGET := ac_test_test
-TARGET_DEPS := $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h $(AC_TEST_DEPS)
+TARGET_DEPS := $(AC_TEST_DEPS) $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h
+ALL_TARGETS += $(BUILD_DIR)/$(TARGET)
+
+$(TARGET): $(TARGET_DEPS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(TARGET).c -o $(BUILD_DIR)/$(TARGET)$(TARGET_SUFFIX)
+
+#-------------------------------------------------------------------------------
+# TEST ALL
+#-------------------------------------------------------------------------------
+
+TARGET := test_all
+TARGET_DEPS := $(ALL_DEPS) $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h
 ALL_TARGETS += $(BUILD_DIR)/$(TARGET)
 
 $(TARGET): $(TARGET_DEPS) | $(BUILD_DIR)
