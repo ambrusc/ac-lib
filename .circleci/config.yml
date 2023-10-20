@@ -5,10 +5,22 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  test-linux:
+  test-linux-intel:
     docker:
       - image: cimg/base:stable
     resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: "Install Clang"
+          command: "sudo apt-get update && sudo apt-get install clang"
+      - run:
+          name: "Test All"
+          command: "make test_all && ./build/test_all"
+  test-linux-arm:
+    docker:
+      - image: cimg/base:stable
+    resource_class: arm.medium
     steps:
       - checkout
       - run:
@@ -28,19 +40,33 @@ jobs:
           command: "make test_all && ./build/test_all"
   test-mac-arm:
     macos:
-      xcode: 14.3.1
+      xcode: 15.0.0
     resource_class: macos.m1.medium.gen1
     steps:
       - checkout
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
+  build-emscripten:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: "Install Clang"
+          command: "sudo apt-get update && sudo apt-get install emscripten"
+      - run:
+          name: "Test All"
+          command: "WASM=1 make test_all && ./build/test_all"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   test-all-workflow:
     jobs:
-      - test-linux
+      - test-linux-intel
+      - test-linux-arm
       - test-mac-intel
       - test-mac-arm
+      - build-emscripten
