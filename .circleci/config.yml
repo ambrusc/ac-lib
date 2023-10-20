@@ -54,8 +54,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install Clang"
-          command: "sudo apt-get update && sudo apt-get install emscripten"
+          name: "Install Emscripten"
+          command: "git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd.."
       - run:
           name: "Test All"
           command: "WASM=1 make test_all && ./build/test_all"
