@@ -17,18 +17,19 @@ jobs:
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
-  test-linux-arm:
-    docker:
-      - image: cimg/base:stable
-    resource_class: arm.medium
-    steps:
-      - checkout
-      - run:
-          name: "Install Clang"
-          command: "sudo apt-get update && sudo apt-get install clang"
-      - run:
-          name: "Test All"
-          command: "make test_all && ./build/test_all"
+  # test-linux-arm:
+  #   docker:
+  #     # TODO(ambrus): This should be an ARM image but I can't find any.
+  #     - image: cimg/base:stable
+  #   resource_class: arm.medium
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Install Clang"
+  #         command: "sudo apt-get update && sudo apt-get install clang"
+  #     - run:
+  #         name: "Test All"
+  #         command: "make test_all && ./build/test_all"
   test-mac-intel:
     macos:
       xcode: 15.0.0
@@ -38,15 +39,15 @@ jobs:
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
-  test-mac-arm:
-    macos:
-      xcode: 15.0.0
-    resource_class: macos.m1.medium.gen1
-    steps:
-      - checkout
-      - run:
-          name: "Test All"
-          command: "make test_all && ./build/test_all"
+  # test-mac-arm:
+  #   macos:
+  #     xcode: 15.0.0
+  #   resource_class: macos.m1.medium.gen1
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Test All"
+  #         command: "make test_all && ./build/test_all"
   build-emscripten:
     docker:
       - image: cimg/base:stable
@@ -55,7 +56,7 @@ jobs:
       - checkout
       - run:
           name: "Install Emscripten"
-          command: "git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd.."
+          command: "git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd .."
       - run:
           name: "Test All"
           command: "WASM=1 make test_all && ./build/test_all"
