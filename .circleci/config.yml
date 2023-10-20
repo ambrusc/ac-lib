@@ -28,7 +28,7 @@ jobs:
           command: "make test_all && ./build/test_all"
   test-mac-arm:
     macos:
-      xcode: 15.0.0
+      xcode: 14.3.1
     resource_class: macos.m1.medium.gen1
     steps:
       - checkout
