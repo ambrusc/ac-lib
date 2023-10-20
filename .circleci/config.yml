@@ -10,10 +10,14 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
       - image: cimg/base:stable
+    resource-class: small
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
+      - run:
+          name: "Install Clang"
+          command: "sudo apt-get install clang"
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
