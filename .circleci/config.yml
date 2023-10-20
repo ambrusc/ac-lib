@@ -26,8 +26,15 @@ jobs:
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
-
-resource_class: macos.x86.medium.gen2
+  test-mac-arm:
+    macos:
+      xcode: 15.0.0
+    resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - run:
+          name: "Test All"
+          command: "make test_all && ./build/test_all"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -36,3 +43,4 @@ workflows:
     jobs:
       - test-linux
       - test-mac-intel
+      - test-mac-arm
