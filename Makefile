@@ -52,17 +52,19 @@ $(BUILD_DIR):
 # Build Flags
 #-------------------------------------------------------------------------------
 
-COMMON_CFLAGS := -std=c17 -Wall -Wextra -Werror -Wno-bitwise-instead-of-logical -Wno-missing-field-initializers
+COMMON_CFLAGS := -std=c17 -Wall -Wextra -Werror \
+	-Wno-bitwise-instead-of-logical \
+	-Wno-missing-field-initializers \
+	-Wno-unknown-warning-option
 
 # Different platforms have different executable suffixes and dependencies
 PLATFORM_CFLAGS :=
 PLATFORM_DEPS :=
-TARGET_SUFFIX :=
 
 ifeq ($(OSTYPE),WIN32)
-	TARGET_SUFFIX += .exe
+	TARGET_SUFFIX:=.exe
 else ifdef WASM
-	TARGET_SUFFIX += .html
+	TARGET_SUFFIX:=.html
 	PLATFORM_DEPS += emscripten_console.html
 	PLATFORM_CFLAGS += -DWASM -sASYNCIFY --shell-file emscripten_console.html -s ALLOW_MEMORY_GROWTH=1 -Wno-limited-postlink-optimizations
 else
@@ -93,12 +95,25 @@ AC_ALLOC_DEPS := ac_alloc.h
 AC_STR_DEPS := ac_str.h ac_alloc.h
 AC_TEST_DEPS := ac_test.h ac_str.h ac_alloc.h
 
+ALL_DEPS := ac_test.h ac_str.h ac_alloc.h
+
 #-------------------------------------------------------------------------------
 # TEST ac_test
 #-------------------------------------------------------------------------------
 
 TARGET := ac_test_test
-TARGET_DEPS := $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h $(AC_TEST_DEPS)
+TARGET_DEPS := $(AC_TEST_DEPS) $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h
+ALL_TARGETS += $(BUILD_DIR)/$(TARGET)
+
+$(TARGET): $(TARGET_DEPS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(TARGET).c -o $(BUILD_DIR)/$(TARGET)$(TARGET_SUFFIX)
+
+#-------------------------------------------------------------------------------
+# TEST ALL
+#-------------------------------------------------------------------------------
+
+TARGET := test_all
+TARGET_DEPS := $(ALL_DEPS) $(PLATFORM_DEPS) $(TARGET).c $(TARGET).h
 ALL_TARGETS += $(BUILD_DIR)/$(TARGET)
 
 $(TARGET): $(TARGET_DEPS) | $(BUILD_DIR)
