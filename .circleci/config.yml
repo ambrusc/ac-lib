@@ -19,7 +19,7 @@ jobs:
           command: "make test_all && ./build/test_all"
   test-mac-intel:
     macos:
-      - xcode: 15.0.0
+      - xcode: "15.0.0"
     resource_class: macos.x86.medium.gen2
     steps:
       - checkout
