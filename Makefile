@@ -52,7 +52,10 @@ $(BUILD_DIR):
 # Build Flags
 #-------------------------------------------------------------------------------
 
-COMMON_CFLAGS := -std=c17 -Wall -Wextra -Werror -Wno-bitwise-instead-of-logical -Wno-missing-field-initializers
+COMMON_CFLAGS := -std=c17 -Wall -Wextra -Werror \
+	-Wno-bitwise-instead-of-logical \
+	-Wno-missing-field-initializers \
+	-Wno-unknown-warning-option
 
 # Different platforms have different executable suffixes and dependencies
 PLATFORM_CFLAGS :=
