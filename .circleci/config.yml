@@ -56,10 +56,10 @@ jobs:
       - checkout
       - run:
           name: "Install Emscripten"
-          command: "git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh && cd .."
+          command: "git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest"
       - run:
-          name: "Test All"
-          command: "WASM=1 make test_all && ./build/test_all"
+          name: "Build Tests"
+          command: "source emsdk/emsdk_env.sh && WASM=1 make test_all && ./build/test_all"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
