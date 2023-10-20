@@ -6,13 +6,9 @@ version: 2.1
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   test-linux:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
       - image: cimg/base:stable
     resource_class: small
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
       - run:
@@ -21,6 +17,17 @@ jobs:
       - run:
           name: "Test All"
           command: "make test_all && ./build/test_all"
+  test-mac-intel:
+    macos:
+      - xcode: 15.0.0
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - checkout
+      - run:
+          name: "Test All"
+          command: "make test_all && ./build/test_all"
+
+resource_class: macos.x86.medium.gen2
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -28,3 +35,4 @@ workflows:
   test-all-workflow:
     jobs:
       - test-linux
+      - test-mac-intel
