@@ -10,7 +10,7 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
       - image: cimg/base:stable
-    resource-class: small
+    resource_class: small
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
