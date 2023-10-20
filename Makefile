@@ -60,12 +60,11 @@ COMMON_CFLAGS := -std=c17 -Wall -Wextra -Werror \
 # Different platforms have different executable suffixes and dependencies
 PLATFORM_CFLAGS :=
 PLATFORM_DEPS :=
-TARGET_SUFFIX :=
 
 ifeq ($(OSTYPE),WIN32)
-	TARGET_SUFFIX += .exe
+	TARGET_SUFFIX:=.exe
 else ifdef WASM
-	TARGET_SUFFIX += .html
+	TARGET_SUFFIX:=.html
 	PLATFORM_DEPS += emscripten_console.html
 	PLATFORM_CFLAGS += -DWASM -sASYNCIFY --shell-file emscripten_console.html -s ALLOW_MEMORY_GROWTH=1 -Wno-limited-postlink-optimizations
 else
